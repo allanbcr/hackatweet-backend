@@ -14,10 +14,7 @@
     "express": "~4.16.1",
     "mongoose": "^8.14.1",
     "morgan": "~1.9.1",
-<<<<<<< HEAD
-    "node-fetch": "2"
-=======
+    "node-fetch": "2",
     "uid2": "^1.0.0"
->>>>>>> 2db2dee9ee38634502fd68f27c89fc846ed4fda0
   }
 }
