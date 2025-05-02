@@ -18,8 +18,8 @@ router.get('/', (req, res) => {
 });
 
 // GET specifiq user
-router.get('/:username', (req, res) => {
-  User.findOne({username: req.params.username}).then(data => {
+router.get('/:token', (req, res) => {
+  User.findOne({token: req.params.token}).then(data => {
     res.json({ result: true, user: data })
   })
 })
