@@ -56,9 +56,7 @@ router.post("/signUp", (req, res) => {
 router.post("/signIn", (req, res) => {
   if (!checkBody(req.body, ["username", "password"])) {
     res.json({ result: false, error: "missing or empty field" });
-  } else {
-    res.json({ result: true, message: "user connected" });
-  }
+  };
 
   User.findOne({ username: req.body.username }).then((data) => {
     if (data && bcrypt.compareSync(req.body.password, data.password)) {
