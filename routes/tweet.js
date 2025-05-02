@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 require("../models/connection");
 const Tweet = require("../models/tweets");
+const User = require('../models/users')
 
 router.get("/", (req, res) => {
   Tweet.find().then((data) => {
@@ -9,14 +10,20 @@ router.get("/", (req, res) => {
   });
 });
 
-router.post("/addTweet", (req, res) => {
-  Tweet.find({ message: req.body.message }).then((data) => {
-    const newTweet = new Tweet({
-      message: req.body.message,
-    });
-    newTweet.save().then((message) => {
-      res.json({ result: true, message: "tweet valid" });
-    });
+router.post("/addTweet/:token", (req, res) => {
+  User.findOne({ token: req.params.token }).then(data => {
+    if (data) {
+      const newTweet = new Tweet({
+        message: req.body.message,
+        writer: data._id
+      });
+      newTweet.save().then((data) => {
+      User.updateOne({token: req.params.token}, {$push: {Tweets: data._id}}) 
+        res.json({ result: true, message: "tweet saved" });  
+      });
+    } else {
+      res.json({ result: false, error: 'User not found' });
+    }
   });
 });
 
