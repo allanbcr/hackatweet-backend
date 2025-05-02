@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
 // GET specifiq user
 router.get("/:token", (req, res) => {
   User.findOne({ token: req.params.token }).then((data) => {
-    res.json({ result: true, user: data });
+    res.json({ result: true, users: data });
   });
 });
 
@@ -41,6 +41,7 @@ router.post("/signUp", (req, res) => {
         password: hash,
         token: uid2(32),
         likes: 0,
+        tweets: []
       });
 
       newUser.save().then((newDoc) => {
