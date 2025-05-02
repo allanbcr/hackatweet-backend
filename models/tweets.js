@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const tweetSchema = mongoose.Schema({
   message: String,
-  writer: { type: mongoose.Schema.Types.ObjectId, ref: "users" }
+  writer: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
 });
 
 const Tweet = mongoose.model("tweets", tweetSchema);
