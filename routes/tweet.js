@@ -11,6 +11,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/addTweet/:token", (req, res) => {
+  // Change the token to _id 
   User.findOne({ _id: req.params.token }).then((data) => {
     if (data) {
       const newTweet = new Tweet({
@@ -18,6 +19,7 @@ router.post("/addTweet/:token", (req, res) => {
         writer: data._id,
       });
       newTweet.save().then((data2) => {
+        // Change the token to _id 
         User.updateOne({ _id: req.params.token }, { $push: { tweets: data2._id } }).then(() => res.json({ result: true, message: "tweet saved" }))
       });
     } else {
