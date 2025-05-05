@@ -15,6 +15,9 @@ router.post("/addTweet/:token", (req, res) => {
   User.findOne({ _id: req.params.token }).then((data) => {
     if (data) {
       const newTweet = new Tweet({
+        // tweet_id: req.body.token,
+        username: req.body.username,
+        firstname: req.body.firstname,
         message: req.body.message,
         date: new Date(),
         writer: data._id,
@@ -24,7 +27,7 @@ router.post("/addTweet/:token", (req, res) => {
         User.updateOne(
           { _id: req.params.token },
           { $push: { tweets: data2._id } }
-        ).then(() => res.json({ result: true, message: "tweet saved" }));
+        ).then(() => res.json({ result: true, message: "tweet saved",  }));
       });
     } else {
       res.json({ result: false, error: "User not found" });
