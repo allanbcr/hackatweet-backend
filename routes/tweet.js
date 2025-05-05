@@ -3,7 +3,7 @@ var router = express.Router();
 require("../models/connection");
 const Tweet = require("../models/tweets");
 const User = require("../models/users");
-const Hashtag = require('../models/hashtags')
+const Hashtag = require("../models/hashtags");
 
 router.get("/", (req, res) => {
   Tweet.find().then((data) => {
@@ -13,7 +13,8 @@ router.get("/", (req, res) => {
 
 router.post("/addTweet/:token", (req, res) => {
   // Change the token to _id
-  User.findOne({ _id: req.params.token }).then((data) => {
+  User.findOne({ token: req.params.token }).then((data) => {
+    console.log(data);
     if (data) {
       const newTweet = new Tweet({
         // tweet_id: req.body.token,
@@ -30,14 +31,19 @@ router.post("/addTweet/:token", (req, res) => {
 
         const hashtags = req.body.message.match(/#[a-z0-9]+/gi);
 
-        for (let i = 0; i < hashtags.length; i++) {
-          console.log('hash =>', i, hashtags[i]);
-          Hashtag.findOneAndUpdate({
-            hashtag: hashtags[i]
-          }, {
-            $push: { tweets: data2._id }
-          }, { upsert: true }
-          ).exec();
+        if (hashtags) {
+          for (let i = 0; i < hashtags.length; i++) {
+            console.log("hash =>", i, hashtags[i]);
+            Hashtag.findOneAndUpdate(
+              {
+                hashtag: hashtags[i],
+              },
+              {
+                $push: { tweets: data2._id },
+              },
+              { upsert: true }
+            ).exec();
+          }
         }
 
         // Change the token to _id
@@ -48,7 +54,7 @@ router.post("/addTweet/:token", (req, res) => {
 
         // const newMessageTo =
 
-        res.json({ result: true })
+        res.json({ result: true });
       });
     } else {
       res.json({ result: false, error: "User not found" });
