@@ -61,7 +61,7 @@ router.post("/signIn", (req, res) => {
 
   User.findOne({ username: req.body.username }).then((data) => {
     if (data && bcrypt.compareSync(req.body.password, data.password)) {
-      res.json({ result: true, token: data.token, username: data.username, password: data.password  });
+      res.json({ result: true, token: data.token, username: data.username });
     } else {
       res.json({ result: false, error: "User not found or wrong field(s)" });
     }
